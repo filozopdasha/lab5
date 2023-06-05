@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <title>Document</title>
+</head>
+
+<body class="container">
+
+<section class="left-part">
+    
+    <section class="starter-line">
+        <input type="text" class="name" placeholder="Назва товару"/>
+        <button id="add-button" class="tooltip" data-tooltip="add"><b>Додати</b></button>
+    </section>
+    <hr>
+
+    <section class="line">
+        <section class="lblock"> 
+            <input type="text" class="fieldBorder" placeholder="Помідори">
+        </section>
+        <div class="block"> 
+            <span class="tooltip red-minus" data-tooltip="remove product" id="removeTomatoes">-</span>
+            <span class="amount-gray">2</span>
+            <span class="tooltip green-plus" data-tooltip="add product" id="addTomatoes">+</span>
+        </div>
+        <div class="buttonblock">
+            <button class="buy tooltip" data-tooltip="not bought">Куплено</button>
+            <span class="tooltip cross" data-tooltip="delete">x</span>
+        </div>
+    </section>
+    <hr>
+
+    <section class="line">
+        <section class="lblock"> 
+            <input type="text" class="fieldBorder" placeholder="Печиво">
+        </section>
+        <div class="block"> 
+            <span class="tooltip red-minus" data-tooltip="remove product" id="removeCookies">-</span>
+            <span class="amount-gray">2</span>
+            <span class="tooltip green-plus" data-tooltip="add product" id="addCookies">+</span>
+        </div>
+        <div class="buttonblock">
+            <button class="buy tooltip" data-tooltip="bought">Куплено</button>
+            <span class="tooltip cross" data-tooltip="delete">x</span>
+        </div>
+    </section>
+    <hr>
+
+    <section class="line">
+        <section class="lblock">
+            <input type="text" class="fieldBorder" placeholder="Сир">
+        </section>
+        <section class="block">
+            <span class="tooltip red-minus2" data-tooltip="remove product" id="removeCheese">-</span>
+            <span class="amount-gray">1</span>
+            <span class="tooltip green-plus" data-tooltip="add product" id="addCheese">+</span>
+        </section>
+        <section class="buttonblock">
+            <button class="buy tooltip" data-tooltip="bought">Куплено</button>
+            <span class="tooltip cross" data-tooltip="delete">x</span>
+        </section>
+    </section>
+
+</section>
+
+<section class="right-part">
+    <section class="line">
+        <h2>Залишилося</h2>
+    </section>
+    <hr>
+    <section class="line-for-notbought-products">
+        <span class="product-item">
+            Печиво
+            <span class="amount" style="color: white;" id="cookiesAmount">2</span>
+        </span>
+        <span class="product-item">
+            Сир
+            <span class="amount" style="color: white;" id="cheeseAmount">1</span>
+        </span>
+    </section>
+    <hr>
+    
+    <h2>Куплено</h2>
+    <hr>
+    
+    <section class="line-for-bought-products">
+        <span class="product-item">
+            Помідори
+            <span class="amount" style="color: white;" id="tomatoesAmount">2</span>
+        </span>
+    </section>
+    <div class="badge">
+        <div class="creator-name">
+            <h3><b class="buy-list">Buy List</b></h3>
+            <div class="my-name">
+                Created by: Dasha Filozop
+            </div>
+        </div>
+    </div>
+
+<script src="C:\Users\38066\Desktop\Lab3\script.js"></script>
+
+</body>
+</html>
