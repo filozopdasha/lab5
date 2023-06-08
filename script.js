@@ -1,144 +1,259 @@
-var add = ['addTomatoes', 'addCookies', 'addCheese'];
-var remove = ['removeTomatoes', 'removeCookies', 'removeCheese'];
-var goodsAmount = document.querySelectorAll('.amount-gray');
-var rightAmount = [document.getElementById('tomatoesAmount'), document.getElementById('cookiesAmount'), document.getElementById('cheeseAmount')]
-var amount = [2, 2, 1];
 
+function addEventListeners() {
+  var redMinusButtons = document.querySelectorAll('.red-minus');
+  var greenPlusButtons = document.querySelectorAll('.green-plus');
+  var nameField = document.querySelectorAll('.fieldBorder');
+ 
+  nameField.forEach(function(fieldBorder) {
+    fieldBorder.removeEventListener('input', handleNameFieldClick);
+    fieldBorder.addEventListener('input', handleNameFieldClick);
+  });
 
-for (var i = 0; i < add.length; i++) {
-  check();
-  document.getElementById(add[i]).addEventListener("click", addGoods);
-  document.getElementById(remove[i]).addEventListener("click", removeGoods);
+  redMinusButtons.forEach(function(button) {
+    button.removeEventListener('click', handleRedMinusClick);
+    button.addEventListener('click', handleRedMinusClick);
+  });
+
+  greenPlusButtons.forEach(function(button) {
+    button.removeEventListener('click', handleGreenPlusClick);
+    button.addEventListener('click', handleGreenPlusClick);
+  });
 }
 
-function check() {
-  for (var i = 0; i < add.length; i++) {
-    if (amount[i] === 1) {
-      var paragraph = document.getElementById(remove[i]);
-      paragraph.classList.add("red-minus2");
-      paragraph.classList.remove("red-minus");
-    } else if (amount[i] > 1) {
-      var paragraph = document.getElementById(remove[i]);
-      paragraph.classList.add("red-minus");
-      paragraph.classList.remove("red-minus2");
-    }
-  }
-}
+// Function to handle red-minus button click
+function handleRedMinusClick() {
+  var amountElement = this.nextElementSibling;
+  var currentAmount = parseInt(amountElement.innerText);
+  if (currentAmount > 1) {
+    currentAmount = currentAmount - 1;
+    amountElement.innerText = currentAmount;
 
-function addGoods(event) {
-  var buttonId = event.target.id;
+    var line = this.closest('.line');
+    var fieldBorder = line.querySelector('.fieldBorder');
+    var placeholderValue = fieldBorder.getAttribute('value');
+    var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
+    var amounts = document.querySelectorAll('.line-for-notbought-products .product-item .amount');
 
-  for (var i = 0; i < add.length; i++) {
-    if (buttonId == add[i]) {
-      ++amount[i];
-      goodsAmount[i].innerHTML = amount[i];
-      rightAmount[i].innerHTML = amount[i];
-      break; 
-    }
-  }
-  check();
-}
-
-function removeGoods(event) {
-  var buttonId = event.target.id;
-
-  for (var i = 0; i < remove.length; i++) {
-    if (buttonId == remove[i]) {
-      if (amount[i] !== 1) {
-        --amount[i];
-        goodsAmount[i].innerHTML = amount[i];
-        rightAmount[i].innerHTML = amount[i];
+    productItems.forEach(function(productItem, index) {
+      var productItemText = productItem.textContent.trim();
+      if (productItemText.includes(placeholderValue)) {
+        amounts[index].innerText = currentAmount;
       }
-      break; 
-    }
+    });
+
+    updateRedMinusButton(amountElement);
   }
-  check();
-}
-var crosses = document.querySelectorAll('.cross');
-
-for (var i = 0; i < crosses.length; i++) {
-  crosses[i].addEventListener("click", removeLine);
 }
 
-function removeLine(event) {
-  var line = event.target.closest('.line');
+// Function to handle green-plus button click
+function handleGreenPlusClick() {
+  var amountElement = this.previousElementSibling;
+  var currentAmount = parseInt(amountElement.innerText);
+  currentAmount = currentAmount + 1;
+  amountElement.innerText = currentAmount;
+
+  var line = this.closest('.line');
   var fieldBorder = line.querySelector('.fieldBorder');
-  var placeholderValue = fieldBorder.getAttribute('placeholder');
-  var productItems = document.querySelectorAll('.line-for-products .product-item');
+  var placeholderValue = fieldBorder.getAttribute('value');
+  var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
+  var amounts = document.querySelectorAll('.line-for-notbought-products .product-item .amount');
 
-  line.remove();
-
-  productItems.forEach(function(productItem) {
+  productItems.forEach(function(productItem, index) {
     var productItemText = productItem.textContent.trim();
     if (productItemText.includes(placeholderValue)) {
-      productItem.remove();
+      amounts[index].innerText = currentAmount;
+    }
+  });
+
+  updateRedMinusButton(amountElement);
+}
+
+// Function to update the red-minus button style based on the amount
+function updateRedMinusButton(amountElement) {
+  var currentAmount = parseInt(amountElement.innerText);
+  var redMinusButton = amountElement.previousElementSibling;
+
+  if (currentAmount <= 1) {
+    redMinusButton.style.backgroundColor = 'rgb(236, 179, 179)';
+    redMinusButton.style.borderBottom = '0.2rem solid rgb(236, 179, 179)';
+  } else {
+    redMinusButton.style.backgroundColor = 'red';
+    redMinusButton.style.borderBottom = '0.2rem solid rgb(197, 22, 22)';
+  }
+}
+
+// Add click event listener to red-minus and green-plus buttons
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('red-minus') || event.target.classList.contains('green-plus')) {
+    var line = event.target.closest('.line');
+    var amountElement = line.querySelector('.amount-gray');
+    updateRedMinusButton(amountElement);
+  }
+});
+
+// Add click event listener to remove buttons
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('cross')) {
+    var line = event.target.closest('.line');
+    line.remove();
+
+    var fieldBorder = line.querySelector('.fieldBorder');
+    var placeholderValue = fieldBorder.getAttribute('value');
+    var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
+
+    productItems.forEach(function(productItem) {
+      var productItemText = productItem.textContent.trim();
+      if (productItemText.includes(placeholderValue)) {
+        productItem.remove();
+      }
+    }); 
+  }
+});
+
+// Add click event listener to buy buttons
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('buy')) {
+    var button = event.target;
+    var currentStatus = button.textContent.trim();
+    var newStatus = currentStatus === "Куплено" ? "Не куплено" : "Куплено";
+    var line = button.closest('.line');
+    var fieldBorder = line.querySelector('.fieldBorder');
+    var value = fieldBorder.getAttribute('value');
+    button.textContent = newStatus;
+
+
+    if (newStatus === "Не куплено") {
+      line.querySelector('.cross').style.display = "none";
+      line.querySelector('.green-plus').style.visibility = "hidden"
+      line.querySelector('.red-minus').style.visibility = "hidden"
+      fieldBorder.style.textDecoration = "line-through";
+      var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
+      var amounts = document.querySelectorAll('.line-for-notbought-products .product-item .amount');
+      fieldBorder.readOnly = true;
+
+      productItems.forEach(function(productItem, index) {
+        var productItemText = productItem.textContent.trim();
+        if (productItemText.includes(value)) {
+          productItem.remove();
+          var boughtPart = document.querySelector('.line-for-bought-products');
+          boughtPart.appendChild(productItem);
+          productItem.style.textDecoration = "line-through"; // Apply line-through text decoration
+          amounts[index].style.textDecoration = "line-through"; // Apply line-through text decoration to amount element
+        }
+      });
+
+    } else {
+      line.querySelector('.cross').style.display = "inline-block";
+      line.querySelector('.green-plus').style.visibility = "visible"
+      line.querySelector('.red-minus').style.visibility = "visible"
+      fieldBorder.style.textDecoration = "none";
+      var productItems = document.querySelectorAll('.line-for-bought-products .product-item');
+      var amounts = document.querySelectorAll('.line-for-bought-products .product-item .amount');
+      fieldBorder.readOnly = false;
+
+      productItems.forEach(function(productItem, index) {
+        var productItemText = productItem.textContent.trim();
+        if (productItemText.includes(value)) {
+          productItem.remove();
+          var leftPart = document.querySelector('.line-for-notbought-products');
+          leftPart.appendChild(productItem);
+          productItem.style.textDecoration = "none"; // Remove line-through text decoration
+          amounts[index].style.textDecoration = "none"; // Remove line-through text decoration from amount element
+        }
+      });
+
+    }
+
+    // Add gaps between product-items
+    var productItemsWithGaps = document.querySelectorAll('.product-item');
+    productItemsWithGaps.forEach(function(productItem, index) {
+      productItem.style.marginBottom = '10px'; // Adjust the desired gap size here
+      productItem.style.marginRight = '10px'; // Adjust the desired gap size here
+
+    });
+  }
+});
+
+// Add click event listener to add button
+var addButton = document.getElementById('add-button');
+addButton.addEventListener('click', function() {
+  var textField = document.querySelector('.name');
+  var inputValue = textField.value;
+
+  if (inputValue.trim() !== "") {
+    var existingPlaceholders = Array.from(document.querySelectorAll('.fieldBorder')).map(function(fieldBorder) {
+      return fieldBorder.getAttribute('value').toLowerCase();
+    });
+
+    if (existingPlaceholders.includes(inputValue.toLowerCase())) {
+      alert("This product isn't unique");
+    } else {
+      var newLine = document.createElement("section");
+      newLine.classList.add("line");
+
+      newLine.innerHTML = `
+        <section class="lblock"> 
+          <input type="text" class="fieldBorder" value="${inputValue}">
+        </section>
+        <div class="block"> 
+          <span class="red-minus"  style = "background-color: rgb(236, 179, 179); border-bottom: 0.2rem solid rgb(236, 179, 179)" >-</span>
+          <span class="amount-gray">1</span>
+          <span class="tooltip green-plus" data-tooltip="add product">+</span>
+        </div>
+        <div class="buttonblock">
+          <button class="buy tooltip" data-tooltip="not bought">Куплено</button>
+          <span class="tooltip cross" data-tooltip="delete">x</span>
+        </div>
+      `;
+      var newItem = document.createElement("span");
+      newItem.classList.add("product-item");
+      
+      var productName = document.createElement("span");
+      productName.classList.add("nameLeft")
+      productName.textContent = inputValue;
+      
+      var productAmount = document.createElement("span");
+      productAmount.classList.add("amount");
+      productAmount.style.color = "white";
+      productAmount.textContent = "1";
+      
+      newItem.appendChild(productName);
+      newItem.appendChild(productAmount);
+      
+      var rightPart = document.querySelector('.line-for-notbought-products');
+
+      var leftPart = document.querySelector('.left-part');
+  
+      leftPart.appendChild(newLine);
+      rightPart.appendChild(newItem);
+      textField.value = ""; // Clear the input field
+
+      // Increase the height of the left-part element
+      leftPart.style.height = (leftPart.offsetHeight + 56) + 'px';
+
+      addEventListeners(); // Attach event listeners to the new line
+      textField.focus();
+    }
+  }
+});
+
+
+function handleNameFieldClick() {
+  var line = this.closest('.line');
+  var fieldBorder = line.querySelector('.fieldBorder');
+  var value = fieldBorder.value;
+  var placeholderValue = fieldBorder.getAttribute('value');
+  var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
+  var nameLeft = document.querySelectorAll('.line-for-notbought-products .product-item .nameLeft');
+
+  productItems.forEach(function(productItem, index) {
+    var productItemText = productItem.textContent.trim();
+    if (productItemText.includes(placeholderValue)) {
+      nameLeft[index].innerText = value;
+      nameField[index].value = value;
     }
   });
 }
 
-
-function toggleBuyStatus(event) {
-  var buyButton = event.target;
-  var currentStatus = buyButton.textContent.trim();
-  var newStatus = currentStatus === "Куплено" ? "Не куплено" : "Куплено";
-  buyButton.textContent = newStatus;
-
-  var cross = buyButton.parentNode.querySelector('.cross');
-  var fieldBorder = buyButton.closest('.line').querySelector('.fieldBorder');
-  var productItem = buyButton.closest('.line').querySelector('.product-item');
-  var boughtProductsLine = document.querySelector('.bought-products');
-
-  if (newStatus === "Не куплено") {
-    cross.style.display = "none";
-    fieldBorder.style.textDecoration = "line-through";
-    boughtProductsLine.appendChild(productItem);
-  } else {
-    cross.style.display = "inline-block";
-    fieldBorder.style.textDecoration = "none";
-    var rightPart = document.querySelector('.right-part');
-    rightPart.insertBefore(productItem, boughtProductsLine.nextSibling);
-  }
-}
-
-var buyButtons = document.querySelectorAll('.buy');
-for (var i = 0; i < buyButtons.length; i++) {
-  buyButtons[i].addEventListener("click", toggleBuyStatus);
-}
-
-
-var addButton = document.getElementById('add-button');
-addButton.addEventListener('click', readTextField);
-
-function readTextField() {
-  var textField = document.querySelector('.name');
-  var inputValue = textField.value;
-  let newLine = document.createElement("section");
-  newLine.classList.add("line");
-
-  newLine.innerHTML = `
-    <section class="lblock"> 
-      <input type="text" class="fieldBorder" placeholder="${inputValue}">
-    </section>
-    <div class="block"> 
-      <span class="tooltip red-minus" data-tooltip="remove product">-</span>
-      <span class="amount-gray">2</span>
-      <span class="tooltip green-plus" data-tooltip="add product">+</span>
-    </div>
-    <div class="buttonblock">
-      <button class="buy tooltip" data-tooltip="not bought">Куплено</button>
-      <span class="tooltip cross" data-tooltip="delete">x</span>
-    </div>
-  `;
-
-  var leftPart = document.querySelector('.left-part');
-  leftPart.appendChild(newLine);
-
-  adjustLeftPartHeight();
-}
-
-function adjustLeftPartHeight() {
-  var leftPart = document.querySelector('.left-part');
-  var leftPartHeight = leftPart.offsetHeight;
-  leftPart.style.height = leftPartHeight+56+'px';
-}
-
+// Initial setup
+addEventListeners();

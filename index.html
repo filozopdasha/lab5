@@ -15,53 +15,53 @@
         <input type="text" class="name" placeholder="Назва товару"/>
         <button id="add-button" class="tooltip" data-tooltip="add"><b>Додати</b></button>
     </section>
-    <hr>
+
 
     <section class="line">
         <section class="lblock"> 
-            <input type="text" class="fieldBorder" placeholder="Помідори">
+            <input type="text" class="fieldBorder" value="Помідори">
         </section>
         <div class="block"> 
-            <span class="tooltip red-minus" data-tooltip="remove product" id="removeTomatoes">-</span>
+            <span class="tooltip red-minus" data-tooltip="remove product">-</span>
             <span class="amount-gray">2</span>
-            <span class="tooltip green-plus" data-tooltip="add product" id="addTomatoes">+</span>
+            <span class="tooltip green-plus" data-tooltip="add product">+</span>
         </div>
         <div class="buttonblock">
             <button class="buy tooltip" data-tooltip="not bought">Куплено</button>
             <span class="tooltip cross" data-tooltip="delete">x</span>
         </div>
     </section>
-    <hr>
+
 
     <section class="line">
         <section class="lblock"> 
-            <input type="text" class="fieldBorder" placeholder="Печиво">
+            <input type="text" class="fieldBorder" value="Печиво">
         </section>
         <div class="block"> 
-            <span class="tooltip red-minus" data-tooltip="remove product" id="removeCookies">-</span>
+            <span class="tooltip red-minus" data-tooltip="remove product">-</span>
             <span class="amount-gray">2</span>
-            <span class="tooltip green-plus" data-tooltip="add product" id="addCookies">+</span>
+            <span class="tooltip green-plus" data-tooltip="add product">+</span>
         </div>
         <div class="buttonblock">
             <button class="buy tooltip" data-tooltip="bought">Куплено</button>
             <span class="tooltip cross" data-tooltip="delete">x</span>
         </div>
     </section>
-    <hr>
+
 
     <section class="line">
-        <section class="lblock">
-            <input type="text" class="fieldBorder" placeholder="Сир">
+        <section class="lblock"> 
+            <input type="text" class="fieldBorder" value="Сир">
         </section>
-        <section class="block">
-            <span class="tooltip red-minus2" data-tooltip="remove product" id="removeCheese">-</span>
+        <div class="block"> 
+            <span class="red-minus"  style = "background-color: rgb(236, 179, 179); border-bottom: 0.2rem solid rgb(236, 179, 179)" >-</span>
             <span class="amount-gray">1</span>
-            <span class="tooltip green-plus" data-tooltip="add product" id="addCheese">+</span>
-        </section>
-        <section class="buttonblock">
+            <span class="tooltip green-plus" data-tooltip="add product">+</span>
+        </div>
+        <div class="buttonblock">
             <button class="buy tooltip" data-tooltip="bought">Куплено</button>
             <span class="tooltip cross" data-tooltip="delete">x</span>
-        </section>
+        </div>
     </section>
 
 </section>
@@ -70,27 +70,25 @@
     <section class="line">
         <h2>Залишилося</h2>
     </section>
-    <hr>
     <section class="line-for-notbought-products">
         <span class="product-item">
-            Печиво
-            <span class="amount" style="color: white;" id="cookiesAmount">2</span>
+            <span class="nameLeft">Печиво</span>
+            <span class="amount" style="color: white;">2</span>
         </span>
         <span class="product-item">
-            Сир
-            <span class="amount" style="color: white;" id="cheeseAmount">1</span>
+            <span class="nameLeft">Сир</span>
+            <span class="amount" style="color: white;">1</span>
+        </span>
+        <span class="product-item">
+            <span class="nameLeft">Помідори</span>
+            <span class="amount" style="color: white;">2</span>
         </span>
     </section>
-    <hr>
     
     <h2>Куплено</h2>
-    <hr>
     
     <section class="line-for-bought-products">
-        <span class="product-item">
-            Помідори
-            <span class="amount" style="color: white;" id="tomatoesAmount">2</span>
-        </span>
+        
     </section>
     <div class="badge">
         <div class="creator-name">
