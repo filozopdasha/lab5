@@ -1,10 +1,9 @@
-
 function addEventListeners() {
   var redMinusButtons = document.querySelectorAll('.red-minus');
   var greenPlusButtons = document.querySelectorAll('.green-plus');
   var nameField = document.querySelectorAll('.fieldBorder');
- 
-  nameField.forEach(function(fieldBorder) {
+
+  nameField.forEach(function (fieldBorder) {
     fieldBorder.removeEventListener('input', handleNameFieldClick);
     fieldBorder.addEventListener('input', handleNameFieldClick);
   });
@@ -245,15 +244,36 @@ function handleNameFieldClick() {
   var placeholderValue = fieldBorder.getAttribute('value');
   var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
   var nameLeft = document.querySelectorAll('.line-for-notbought-products .product-item .nameLeft');
+  var nameField = document.querySelectorAll('.fieldBorder');
 
-  productItems.forEach(function(productItem, index) {
-    var productItemText = productItem.textContent.trim();
-    if (productItemText.includes(placeholderValue)) {
-      nameLeft[index].innerText = value;
-      nameField[index].value = value;
-    }
-  });
+  // Check if the field is not empty
+  if (value.trim() !== "") {
+    productItems.forEach(function(productItem, index) {
+      var productItemText = productItem.textContent.trim();
+      if (productItemText.includes(placeholderValue)) {
+        if (value.length === 1 && fieldBorder.selectionStart === 0 && fieldBorder.selectionEnd === 1) {
+          alert("A product name should have at least one character");
+          fieldBorder.setSelectionRange(0, 1); // Keep the cursor at the first position
+        } else {
+          nameLeft[index].innerText = value;
+          nameField[index].value = value;
+          fieldBorder.setAttribute('value', value); // Update the value attribute of the field border
+        }
+      }
+    });
+  } else {
+    alert("A product name should have at least one character");
+    nameLeft.forEach(function(name, index) {
+      var productItem = productItems[index];
+      var productItemText = productItem.textContent.trim();
+      if (productItemText.includes(placeholderValue)) {
+        name.innerText = placeholderValue;
+      }
+    });
+  }
 }
+
+
 
 // Initial setup
 addEventListeners();
