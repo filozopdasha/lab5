@@ -1,19 +1,19 @@
 function addEventListeners() {
   var redMinusButtons = document.querySelectorAll('.red-minus');
   var greenPlusButtons = document.querySelectorAll('.green-plus');
-  var nameField = document.querySelectorAll('.fieldBorder');
+  var nameFields = document.querySelectorAll('.fieldBorder');
 
-  nameField.forEach(function (fieldBorder) {
-    fieldBorder.removeEventListener('input', handleNameFieldClick);
-    fieldBorder.addEventListener('input', handleNameFieldClick);
+  nameFields.forEach(function (field) {
+    field.removeEventListener('input', handleNameFieldClick);
+    field.addEventListener('input', handleNameFieldClick);
   });
 
-  redMinusButtons.forEach(function(button) {
+  redMinusButtons.forEach(function (button) {
     button.removeEventListener('click', handleRedMinusClick);
     button.addEventListener('click', handleRedMinusClick);
   });
 
-  greenPlusButtons.forEach(function(button) {
+  greenPlusButtons.forEach(function (button) {
     button.removeEventListener('click', handleGreenPlusClick);
     button.addEventListener('click', handleGreenPlusClick);
   });
@@ -29,13 +29,13 @@ function handleRedMinusClick() {
 
     var line = this.closest('.line');
     var fieldBorder = line.querySelector('.fieldBorder');
-    var placeholderValue = fieldBorder.getAttribute('value');
+    var placeholderValue = fieldBorder.value;
     var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
     var amounts = document.querySelectorAll('.line-for-notbought-products .product-item .amount');
 
-    productItems.forEach(function(productItem, index) {
-      var productItemText = productItem.textContent.trim();
-      if (productItemText.includes(placeholderValue)) {
+    productItems.forEach(function (productItem, index) {
+      var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
+      if (productItemText[0] === placeholderValue) {
         amounts[index].innerText = currentAmount;
       }
     });
@@ -53,13 +53,13 @@ function handleGreenPlusClick() {
 
   var line = this.closest('.line');
   var fieldBorder = line.querySelector('.fieldBorder');
-  var placeholderValue = fieldBorder.getAttribute('value');
+  var placeholderValue = fieldBorder.value;
   var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
   var amounts = document.querySelectorAll('.line-for-notbought-products .product-item .amount');
 
-  productItems.forEach(function(productItem, index) {
-    var productItemText = productItem.textContent.trim();
-    if (productItemText.includes(placeholderValue)) {
+  productItems.forEach(function (productItem, index) {
+    var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
+    if (productItemText[0] === placeholderValue) {
       amounts[index].innerText = currentAmount;
     }
   });
@@ -82,7 +82,7 @@ function updateRedMinusButton(amountElement) {
 }
 
 // Add click event listener to red-minus and green-plus buttons
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   if (event.target.classList.contains('red-minus') || event.target.classList.contains('green-plus')) {
     var line = event.target.closest('.line');
     var amountElement = line.querySelector('.amount-gray');
@@ -91,48 +91,48 @@ document.addEventListener('click', function(event) {
 });
 
 // Add click event listener to remove buttons
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   if (event.target.classList.contains('cross')) {
     var line = event.target.closest('.line');
     line.remove();
 
     var fieldBorder = line.querySelector('.fieldBorder');
-    var placeholderValue = fieldBorder.getAttribute('value');
+    var placeholderValue = fieldBorder.value;
     var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
 
-    productItems.forEach(function(productItem) {
-      var productItemText = productItem.textContent.trim();
-      if (productItemText.includes(placeholderValue)) {
+    productItems.forEach(function (productItem) {
+      var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
+      if (productItemText[0] === placeholderValue) {
         productItem.remove();
       }
-    }); 
+    });
   }
 });
 
 // Add click event listener to buy buttons
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   if (event.target.classList.contains('buy')) {
     var button = event.target;
     var currentStatus = button.textContent.trim();
     var newStatus = currentStatus === "Куплено" ? "Не куплено" : "Куплено";
     var line = button.closest('.line');
     var fieldBorder = line.querySelector('.fieldBorder');
-    var value = fieldBorder.getAttribute('value');
+    var value = fieldBorder.value;
     button.textContent = newStatus;
-
 
     if (newStatus === "Не куплено") {
       line.querySelector('.cross').style.display = "none";
-      line.querySelector('.green-plus').style.visibility = "hidden"
-      line.querySelector('.red-minus').style.visibility = "hidden"
+      line.querySelector('.green-plus').style.visibility = "hidden";
+      line.querySelector('.red-minus').style.visibility = "hidden";
       fieldBorder.style.textDecoration = "line-through";
       var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
       var amounts = document.querySelectorAll('.line-for-notbought-products .product-item .amount');
       fieldBorder.readOnly = true;
+      button.setAttribute("data-tooltip", "not-bought");
 
-      productItems.forEach(function(productItem, index) {
-        var productItemText = productItem.textContent.trim();
-        if (productItemText.includes(value)) {
+      productItems.forEach(function (productItem, index) {
+        var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
+        if (productItemText[0] === value) {
           productItem.remove();
           var boughtPart = document.querySelector('.line-for-bought-products');
           boughtPart.appendChild(productItem);
@@ -140,19 +140,19 @@ document.addEventListener('click', function(event) {
           amounts[index].style.textDecoration = "line-through"; // Apply line-through text decoration to amount element
         }
       });
-
     } else {
       line.querySelector('.cross').style.display = "inline-block";
-      line.querySelector('.green-plus').style.visibility = "visible"
-      line.querySelector('.red-minus').style.visibility = "visible"
+      line.querySelector('.green-plus').style.visibility = "visible";
+      line.querySelector('.red-minus').style.visibility = "visible";
       fieldBorder.style.textDecoration = "none";
       var productItems = document.querySelectorAll('.line-for-bought-products .product-item');
       var amounts = document.querySelectorAll('.line-for-bought-products .product-item .amount');
       fieldBorder.readOnly = false;
+      button.setAttribute("data-tooltip", "bought");
 
-      productItems.forEach(function(productItem, index) {
-        var productItemText = productItem.textContent.trim();
-        if (productItemText.includes(value)) {
+      productItems.forEach(function (productItem, index) {
+        var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
+        if (productItemText[0] === value) {
           productItem.remove();
           var leftPart = document.querySelector('.line-for-notbought-products');
           leftPart.appendChild(productItem);
@@ -160,28 +160,26 @@ document.addEventListener('click', function(event) {
           amounts[index].style.textDecoration = "none"; // Remove line-through text decoration from amount element
         }
       });
-
     }
 
     // Add gaps between product-items
     var productItemsWithGaps = document.querySelectorAll('.product-item');
-    productItemsWithGaps.forEach(function(productItem, index) {
+    productItemsWithGaps.forEach(function (productItem, index) {
       productItem.style.marginBottom = '10px'; // Adjust the desired gap size here
       productItem.style.marginRight = '10px'; // Adjust the desired gap size here
-
     });
   }
 });
 
 // Add click event listener to add button
 var addButton = document.getElementById('add-button');
-addButton.addEventListener('click', function() {
+addButton.addEventListener('click', function () {
   var textField = document.querySelector('.name');
   var inputValue = textField.value;
 
   if (inputValue.trim() !== "") {
-    var existingPlaceholders = Array.from(document.querySelectorAll('.fieldBorder')).map(function(fieldBorder) {
-      return fieldBorder.getAttribute('value').toLowerCase();
+    var existingPlaceholders = Array.from(document.querySelectorAll('.fieldBorder')).map(function (fieldBorder) {
+      return fieldBorder.value.toLowerCase();
     });
 
     if (existingPlaceholders.includes(inputValue.toLowerCase())) {
@@ -195,7 +193,7 @@ addButton.addEventListener('click', function() {
           <input type="text" class="fieldBorder" value="${inputValue}">
         </section>
         <div class="block"> 
-          <span class="red-minus"  style = "background-color: rgb(236, 179, 179); border-bottom: 0.2rem solid rgb(236, 179, 179)" >-</span>
+          <span class="red-minus" style="background-color: rgb(236, 179, 179); border-bottom: 0.2rem solid rgb(236, 179, 179)">-</span>
           <span class="amount-gray">1</span>
           <span class="tooltip green-plus" data-tooltip="add product">+</span>
         </div>
@@ -206,23 +204,22 @@ addButton.addEventListener('click', function() {
       `;
       var newItem = document.createElement("span");
       newItem.classList.add("product-item");
-      
+
       var productName = document.createElement("span");
-      productName.classList.add("nameLeft")
-      productName.textContent = inputValue;
-      
+      productName.classList.add("nameLeft");
+      productName.textContent = inputValue + " ";
+
       var productAmount = document.createElement("span");
       productAmount.classList.add("amount");
       productAmount.style.color = "white";
       productAmount.textContent = "1";
-      
+
       newItem.appendChild(productName);
       newItem.appendChild(productAmount);
-      
-      var rightPart = document.querySelector('.line-for-notbought-products');
 
+      var rightPart = document.querySelector('.line-for-notbought-products');
       var leftPart = document.querySelector('.left-part');
-  
+
       leftPart.appendChild(newLine);
       rightPart.appendChild(newItem);
       textField.value = ""; // Clear the input field
@@ -236,44 +233,22 @@ addButton.addEventListener('click', function() {
   }
 });
 
-
 function handleNameFieldClick() {
   var line = this.closest('.line');
   var fieldBorder = line.querySelector('.fieldBorder');
   var value = fieldBorder.value;
   var placeholderValue = fieldBorder.getAttribute('value');
   var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
-  var nameLeft = document.querySelectorAll('.line-for-notbought-products .product-item .nameLeft');
-  var nameField = document.querySelectorAll('.fieldBorder');
 
-  // Check if the field is not empty
-  if (value.trim() !== "") {
-    productItems.forEach(function(productItem, index) {
-      var productItemText = productItem.textContent.trim();
-      if (productItemText.includes(placeholderValue)) {
-        if (value.length === 1 && fieldBorder.selectionStart === 0 && fieldBorder.selectionEnd === 1) {
-          alert("A product name should have at least one character");
-          fieldBorder.setSelectionRange(0, 1); // Keep the cursor at the first position
-        } else {
-          nameLeft[index].innerText = value;
-          nameField[index].value = value;
-          fieldBorder.setAttribute('value', value); // Update the value attribute of the field border
-        }
-      }
-    });
-  } else {
-    alert("A product name should have at least one character");
-    nameLeft.forEach(function(name, index) {
-      var productItem = productItems[index];
-      var productItemText = productItem.textContent.trim();
-      if (productItemText.includes(placeholderValue)) {
-        name.innerText = placeholderValue;
-      }
-    });
-  }
+  productItems.forEach(function (productItem) {
+    var nameLeft = productItem.querySelector('.nameLeft');
+    if (nameLeft.innerText.trim() === placeholderValue) {
+      nameLeft.innerText = value;
+    }
+  });
+
+  fieldBorder.setAttribute('value', value);
 }
-
-
 
 // Initial setup
 addEventListeners();
