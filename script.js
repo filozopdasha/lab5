@@ -19,7 +19,7 @@ function addEventListeners() {
   });
 }
 
-// Function to handle red-minus button click
+// red-minus
 function handleRedMinusClick() {
   var amountElement = this.nextElementSibling;
   var currentAmount = parseInt(amountElement.innerText);
@@ -44,7 +44,7 @@ function handleRedMinusClick() {
   }
 }
 
-// Function to handle green-plus button click
+// green-plus
 function handleGreenPlusClick() {
   var amountElement = this.previousElementSibling;
   var currentAmount = parseInt(amountElement.innerText);
@@ -67,7 +67,7 @@ function handleGreenPlusClick() {
   updateRedMinusButton(amountElement);
 }
 
-// Function to update the red-minus button style based on the amount
+// red-minus if 1
 function updateRedMinusButton(amountElement) {
   var currentAmount = parseInt(amountElement.innerText);
   var redMinusButton = amountElement.previousElementSibling;
@@ -81,7 +81,7 @@ function updateRedMinusButton(amountElement) {
   }
 }
 
-// Add click event listener to red-minus and green-plus buttons
+// add click event listener to red-minus and green-plus buttons
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('red-minus') || event.target.classList.contains('green-plus')) {
     var line = event.target.closest('.line');
@@ -90,7 +90,7 @@ document.addEventListener('click', function (event) {
   }
 });
 
-// Add click event listener to remove buttons
+//remove button
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('cross')) {
     var line = event.target.closest('.line');
@@ -109,7 +109,7 @@ document.addEventListener('click', function (event) {
   }
 });
 
-// Add click event listener to buy buttons
+// buy button
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('buy')) {
     var button = event.target;
@@ -136,8 +136,8 @@ document.addEventListener('click', function (event) {
           productItem.remove();
           var boughtPart = document.querySelector('.line-for-bought-products');
           boughtPart.appendChild(productItem);
-          productItem.style.textDecoration = "line-through"; // Apply line-through text decoration
-          amounts[index].style.textDecoration = "line-through"; // Apply line-through text decoration to amount element
+          productItem.style.textDecoration = "line-through"; 
+          amounts[index].style.textDecoration = "line-through";
         }
       });
     } else {
@@ -156,22 +156,22 @@ document.addEventListener('click', function (event) {
           productItem.remove();
           var leftPart = document.querySelector('.line-for-notbought-products');
           leftPart.appendChild(productItem);
-          productItem.style.textDecoration = "none"; // Remove line-through text decoration
-          amounts[index].style.textDecoration = "none"; // Remove line-through text decoration from amount element
+          productItem.style.textDecoration = "none"; 
+          amounts[index].style.textDecoration = "none"; 
         }
       });
     }
 
-    // Add gaps between product-items
+    // adding gaps between product-items
     var productItemsWithGaps = document.querySelectorAll('.product-item');
     productItemsWithGaps.forEach(function (productItem, index) {
-      productItem.style.marginBottom = '10px'; // Adjust the desired gap size here
-      productItem.style.marginRight = '10px'; // Adjust the desired gap size here
+      productItem.style.marginBottom = '10px'; 
+      productItem.style.marginRight = '10px'; 
     });
   }
 });
 
-// Add click event listener to add button
+// add button
 var addButton = document.getElementById('add-button');
 addButton.addEventListener('click', function () {
   var textField = document.querySelector('.name');
@@ -222,12 +222,12 @@ addButton.addEventListener('click', function () {
 
       leftPart.appendChild(newLine);
       rightPart.appendChild(newItem);
-      textField.value = ""; // Clear the input field
+      textField.value = ""; 
 
-      // Increase the height of the left-part element
+      // increase left-part while adding
       leftPart.style.height = (leftPart.offsetHeight + 56) + 'px';
 
-      addEventListeners(); // Attach event listeners to the new line
+      addEventListeners(); 
       textField.focus();
     }
   }
@@ -239,16 +239,22 @@ function handleNameFieldClick() {
   var value = fieldBorder.value;
   var placeholderValue = fieldBorder.getAttribute('value');
   var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
-
+  if (value.length === 0) {
+    fieldBorder.value = 'Назва';
+    value = 'Назва';
+  }
   productItems.forEach(function (productItem) {
     var nameLeft = productItem.querySelector('.nameLeft');
     if (nameLeft.innerText.trim() === placeholderValue) {
       nameLeft.innerText = value;
     }
   });
+  
+
 
   fieldBorder.setAttribute('value', value);
 }
 
-// Initial setup
+
+
 addEventListeners();

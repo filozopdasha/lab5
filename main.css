@@ -104,7 +104,7 @@ body{
 .block{
 	width: 29%;
 	position: relative;
-	right: 2% ;
+	right: 5% ;
 	display:flex;
 	justify-content: center;
 }
