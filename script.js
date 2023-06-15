@@ -6,6 +6,8 @@ function addEventListeners() {
   nameFields.forEach(function (field) {
     field.removeEventListener('input', handleNameFieldClick);
     field.addEventListener('input', handleNameFieldClick);
+    field.removeEventListener('keydown', handleKeyPress);
+    field.addEventListener('keydown', handleKeyPress);
   });
 
   redMinusButtons.forEach(function (button) {
@@ -231,7 +233,22 @@ addButton.addEventListener('click', function () {
       textField.focus();
     }
   }
-});
+}
+);
+//add by clicking enter
+function handleKeyPress(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); 
+    var addButton = document.getElementById('add-button');
+    addButton.click(); 
+  }
+}
+
+
+document.addEventListener('keydown', handleKeyPress);
+
+addEventListeners();
+
 
 function handleNameFieldClick() {
   var line = this.closest('.line');
