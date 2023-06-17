@@ -1,3 +1,5 @@
+
+
 function addEventListeners() {
   var redMinusButtons = document.querySelectorAll('.red-minus');
   var greenPlusButtons = document.querySelectorAll('.green-plus');
@@ -98,6 +100,12 @@ document.addEventListener('click', function (event) {
     var line = event.target.closest('.line');
     line.remove();
 
+    // Calculate the height reduction
+    var heightReduction = 70;
+
+    var leftPart = document.querySelector('.left-part');
+    leftPart.style.height = (leftPart.offsetHeight - heightReduction) + 'px';
+
     var fieldBorder = line.querySelector('.fieldBorder');
     var placeholderValue = fieldBorder.value;
     var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
@@ -135,12 +143,16 @@ document.addEventListener('click', function (event) {
       productItems.forEach(function (productItem, index) {
         var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
         if (productItemText[0] === value) {
+          var boughtProductsSection = document.querySelector('.line-for-bought-products');
+          boughtProductsSection.style.height = (boughtProductsSection.offsetHeight - 200) + 'px';
           productItem.remove();
           var boughtPart = document.querySelector('.line-for-bought-products');
           boughtPart.appendChild(productItem);
           productItem.style.textDecoration = "line-through"; 
           amounts[index].style.textDecoration = "line-through";
         }
+        var boughtProductsSection = document.querySelector('.line-for-bought-products');
+          boughtProductsSection.style.height = (boughtProductsSection.offsetHeight - 200) + 'px';
       });
     } else {
       line.querySelector('.cross').style.display = "inline-block";
@@ -228,6 +240,8 @@ addButton.addEventListener('click', function () {
 
       // increase left-part while adding
       leftPart.style.height = (leftPart.offsetHeight + 56) + 'px';
+
+      
 
       addEventListeners(); 
       textField.focus();
