@@ -100,11 +100,11 @@ document.addEventListener('click', function (event) {
     var line = event.target.closest('.line');
     line.remove();
 
-    // Calculate the height reduction
-    var heightReduction = 70;
+    var leftPart = document.querySelector('.left-part'); 
 
-    var leftPart = document.querySelector('.left-part');
-    leftPart.style.height = (leftPart.offsetHeight - heightReduction) + 'px';
+      // reduce left-part while deleting
+      leftPart.style.height = (leftPart.offsetHeight - 77) + 'px';
+
 
     var fieldBorder = line.querySelector('.fieldBorder');
     var placeholderValue = fieldBorder.value;
@@ -143,16 +143,12 @@ document.addEventListener('click', function (event) {
       productItems.forEach(function (productItem, index) {
         var productItemText = productItem.querySelector('.nameLeft').innerText.trim().split(" ");
         if (productItemText[0] === value) {
-          var boughtProductsSection = document.querySelector('.line-for-bought-products');
-          boughtProductsSection.style.height = (boughtProductsSection.offsetHeight - 200) + 'px';
           productItem.remove();
           var boughtPart = document.querySelector('.line-for-bought-products');
           boughtPart.appendChild(productItem);
           productItem.style.textDecoration = "line-through"; 
           amounts[index].style.textDecoration = "line-through";
         }
-        var boughtProductsSection = document.querySelector('.line-for-bought-products');
-          boughtProductsSection.style.height = (boughtProductsSection.offsetHeight - 200) + 'px';
       });
     } else {
       line.querySelector('.cross').style.display = "inline-block";
@@ -239,7 +235,7 @@ addButton.addEventListener('click', function () {
       textField.value = ""; 
 
       // increase left-part while adding
-      leftPart.style.height = (leftPart.offsetHeight + 56) + 'px';
+      leftPart.style.height = (leftPart.offsetHeight + 57) + 'px';
 
       
 
@@ -271,8 +267,8 @@ function handleNameFieldClick() {
   var placeholderValue = fieldBorder.getAttribute('value');
   var productItems = document.querySelectorAll('.line-for-notbought-products .product-item');
   if (value.length === 0) {
-    fieldBorder.value = 'Назва';
-    value = 'Назва';
+    fieldBorder.value = 'Name';
+    value = 'Name';
   }
   productItems.forEach(function (productItem) {
     var nameLeft = productItem.querySelector('.nameLeft');
